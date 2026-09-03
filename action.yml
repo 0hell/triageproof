@@ -1,0 +1,21 @@
+name: TriageProof
+description: Check an issue or pull request body for reproducibility details and potential secrets.
+author: TriageProof contributors
+branding:
+  icon: check-circle
+  color: green
+inputs:
+  mode:
+    description: Use advisory to report only, or strict to fail incomplete/blocked checks.
+    required: false
+    default: advisory
+outputs:
+  status:
+    description: ready, needs-info, or blocked
+  score:
+    description: Completeness score from 0 to 100
+  potential-secrets:
+    description: Number of potential secrets found
+runs:
+  using: node20
+  main: src/action.js
