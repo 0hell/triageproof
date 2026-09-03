@@ -8,6 +8,12 @@ import { fileURLToPath } from "node:url";
 
 const CLI = fileURLToPath(new URL("../bin/triageproof.js", import.meta.url));
 
+test("CLI reports the package version", () => {
+  const result = spawnSync(process.execPath, [CLI, "--version"], { encoding: "utf8" });
+  assert.equal(result.status, 0);
+  assert.equal(result.stdout.trim(), "0.1.1");
+});
+
 test("CLI emits Markdown and returns needs-info exit code", async () => {
   const directory = await mkdtemp(join(tmpdir(), "triageproof-"));
   const issue = join(directory, "issue.md");

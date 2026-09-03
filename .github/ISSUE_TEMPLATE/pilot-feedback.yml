@@ -1,0 +1,79 @@
+name: Pilot request or feedback
+description: Join the opt-in pilot or share aggregate feedback without posting issue bodies.
+title: "[Pilot]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is a public form. Do not paste issue bodies, credentials, personal data, private repository details, or other sensitive content.
+
+  - type: input
+    id: repository
+    attributes:
+      label: Public repository URL
+      description: The open-source repository you maintain or are authorized to evaluate.
+      placeholder: https://github.com/owner/repository
+    validations:
+      required: true
+
+  - type: dropdown
+    id: role
+    attributes:
+      label: Your role
+      options:
+        - Maintainer or repository owner
+        - Contributor with maintainer approval
+        - Interested evaluator (not yet authorized to install)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Pilot stage
+      options:
+        - Interested
+        - Consented
+        - Installed
+        - Active — processed at least one real issue
+        - Retained — keeping or continuing evaluation
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: TriageProof version or commit
+      placeholder: v0.1.0 or a full commit SHA
+
+  - type: textarea
+    id: aggregate_results
+    attributes:
+      label: Aggregate results
+      description: Share counts only, such as issues checked and useful, neutral, or incorrect warnings. Do not include issue text or secret values.
+      placeholder: "Issues checked: 3; useful warnings: 2; neutral: 1; incorrect: 0"
+
+  - type: textarea
+    id: feedback
+    attributes:
+      label: Maintainer feedback
+      description: What helped, what was confusing, and what would determine whether you keep it?
+
+  - type: dropdown
+    id: public_quote
+    attributes:
+      label: May the project quote this feedback publicly?
+      options:
+        - No
+        - Yes, with the repository name
+        - Yes, anonymously
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Public-data confirmation
+      options:
+        - label: I did not include issue bodies, credentials, personal data, or private repository information.
+          required: true

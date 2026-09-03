@@ -4,7 +4,7 @@ import { redactSecrets } from "./redactor.js";
 import { renderMarkdown } from "./report.js";
 import { decodeInputBuffer, MAX_INPUT_BYTES } from "./limits.js";
 
-const HELP = `TriageProof 0.1.0
+const HELP = `TriageProof 0.1.1
 
 Evidence-first issue preflight for open-source maintainers.
 
@@ -53,7 +53,7 @@ export async function main(args, output = console) {
   }
 
   if (args.includes("--version") || args.includes("-v")) {
-    output.log("0.1.0");
+    output.log("0.1.1");
     return 0;
   }
 

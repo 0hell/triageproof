@@ -2,22 +2,28 @@
 
 This roadmap separates current capabilities from planned work.
 
-## v0.1 — local preflight
+## v0.1 — public MVP
 
 - [x] Read Markdown from a file or standard input
 - [x] Check four reproducibility fields in English and Simplified Chinese
 - [x] Detect and redact a small set of high-confidence credential patterns
 - [x] Emit Markdown or JSON without echoing detected values
 - [x] Ship offline tests and examples
+- [x] Publish the public repository, CI, the `v0.1.x` releases, and the moving `v0` Action tag
 
-## v0.2 — adoption path
+## v0.2 — Pilot Ready
 
 - [x] Read GitHub issue and pull request bodies from the event file
 - [x] Write an advisory report to the workflow summary
 - [x] Keep the default action read-only and non-mutating
-- [ ] Validate the action in a public repository
-- [ ] Publish the first tagged release
-- [ ] Document three opt-in pilot results
+- [x] Add equivalent English and Simplified Chinese five-minute onboarding
+- [x] Handle empty bodies and invalid Action modes safely
+- [x] Expand Action behavior and security regression tests
+- [x] Add a public-safe, structured pilot feedback path
+- [ ] Record one public issue-event run in this repository
+- [ ] Pass the v0.2 release gates and publish `v0.2.0`
+
+Pilot adoption is measured after the release and does not block the tag. See [docs/V0.2_PLAN.md](docs/V0.2_PLAN.md) for scope and acceptance criteria.
 
 ## After the first pilots
 

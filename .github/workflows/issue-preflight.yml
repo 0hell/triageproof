@@ -15,6 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Inspect the issue body as untrusted data
-        uses: 0hell/triageproof@v0 # Pin a full commit SHA for immutable production use.
+        uses: 0hell/triageproof@v0
         with:
           mode: advisory

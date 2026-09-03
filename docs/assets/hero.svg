@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">TriageProof</title>
+  <desc id="desc">Evidence-first issue preflight for open-source maintainers</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1117"/>
+      <stop offset="1" stop-color="#161b22"/>
+    </linearGradient>
+    <linearGradient id="shield" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#58a6ff"/>
+      <stop offset="1" stop-color="#3fb950"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="360" rx="28" fill="url(#background)"/>
+  <circle cx="1040" cy="40" r="180" fill="#58a6ff" opacity="0.06"/>
+  <circle cx="1135" cy="330" r="210" fill="#3fb950" opacity="0.05"/>
+  <g transform="translate(100 88)">
+    <path d="M86 0 154 25v54c0 49-28 85-68 104C46 164 18 128 18 79V25Z" fill="url(#shield)"/>
+    <path d="m53 88 21 21 47-53" fill="none" stroke="#0d1117" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="300" y="132" fill="#f0f6fc" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="72" font-weight="700" letter-spacing="-2">TriageProof</text>
+  <text x="304" y="184" fill="#b1bac4" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="26">Catch incomplete bug reports and exposed credentials before triage.</text>
+  <g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="15" font-weight="600">
+    <rect x="304" y="226" width="154" height="40" rx="20" fill="#1f6feb" opacity="0.22" stroke="#58a6ff"/>
+    <text x="381" y="252" fill="#79c0ff" text-anchor="middle">LOCAL FIRST</text>
+    <rect x="474" y="226" width="216" height="40" rx="20" fill="#238636" opacity="0.22" stroke="#3fb950"/>
+    <text x="582" y="252" fill="#56d364" text-anchor="middle">ZERO RUNTIME DEPS</text>
+    <rect x="706" y="226" width="214" height="40" rx="20" fill="#8957e5" opacity="0.2" stroke="#a371f7"/>
+    <text x="813" y="252" fill="#d2a8ff" text-anchor="middle">READ-ONLY ACTION</text>
+  </g>
+</svg>
