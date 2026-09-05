@@ -21,7 +21,32 @@ TriageProof checks public bug reports **before triage**. It flags missing reprod
 
 > **Early MVP:** TriageProof reduces avoidable triage work and accidental exposure. It does not guarantee that a report is complete or secret-free.
 
-## See the result
+## A real Issue → Action → ready walkthrough
+
+[Demo issue #1](https://github.com/0hell/triageproof/issues/1) was opened and then
+edited on **2026-09-05**, triggering two real GitHub Actions runs. The issue content
+is a maintainer-created synthetic example.
+
+### 1. Start with an incomplete issue
+
+The [original body](examples/live-demo/before.md) deliberately includes only environment information:
+
+```markdown
+# Demonstration report
+
+This is a maintainer-created synthetic example for the README, not a product defect.
+The first version intentionally omits reproduction steps and expected/actual behavior.
+
+## Environment
+
+Windows 11, Node.js 22.12.0 (example environment).
+```
+
+### 2. Read the missing-information report
+
+[Open the first Action run](https://github.com/0hell/triageproof/actions/runs/33952775281),
+then scroll down in **Summary** to **TriageProof report** (sign in to GitHub if needed).
+The saved body produces:
 
 ```text
 TriageProof report
@@ -39,9 +64,45 @@ Security preflight: no high-confidence pattern detected
 
 Reports contain controlled findings and locations—not the original issue body or detected credential value.
 
-## Add it to a repository in five minutes
+<!-- LIVE-DEMO-BEFORE-SCREENSHOT
+After capturing the actual GitHub Summary, add the PNG and uncomment this image:
+![Incomplete issue: needs information, 25/100](docs/assets/issue-preflight-needs-info.png)
+-->
 
-Create `.github/workflows/issue-preflight.yml` in your repository:
+### 3. Complete the same issue and run it again
+
+We edited the same issue to add reproduction steps, expected behavior, and actual
+behavior. See the [complete body](examples/live-demo/after.md) and
+[second Action run](https://github.com/0hell/triageproof/actions/runs/33952930498).
+
+| Check | Before | After |
+| --- | --- | --- |
+| Reproduction | MISSING | PASS |
+| Environment | PASS | PASS |
+| Expected behavior | MISSING | PASS |
+| Actual behavior | MISSING | PASS |
+| Completeness | **25/100** | **100/100** |
+| Report status | `needs-info` | **`ready`** |
+| Potential secrets | 0 | 0 |
+
+Both hosted runs completed successfully in `advisory` mode. **A green workflow
+means the Action ran; the report status tells you whether the issue is ready.**
+The results above were also verified by replaying the saved bodies through the
+same Action version. This is a live integration demonstration, not external adoption evidence.
+
+<!-- LIVE-DEMO-AFTER-SCREENSHOT
+After capturing the actual GitHub Summary, add the PNG and uncomment this image:
+![Completed issue: ready, 100/100](docs/assets/issue-preflight-ready.png)
+-->
+
+Report screenshots are pending. The [capture and replay guide](docs/LIVE_DEMO.md)
+links to both reports and explains how to add the images here.
+
+## Copy the workflow into your repository
+
+Use the copy button on this code block and save it as
+`.github/workflows/issue-preflight.yml` in your repository.
+The same file is available at [examples/issue-preflight.yml](examples/issue-preflight.yml).
 
 ```yaml
 name: Issue preflight
@@ -51,6 +112,10 @@ on:
     types: [opened, edited, reopened]
 
 permissions: {}
+
+concurrency:
+  group: triageproof-issue-${{ github.event.issue.number }}
+  cancel-in-progress: true
 
 jobs:
   preflight:
@@ -62,7 +127,8 @@ jobs:
           mode: advisory
 ```
 
-Commit the file, then open or edit an issue. Read the report at **Actions → Issue preflight → Summary**.
+Commit the file to your **default branch**, then open or edit an issue. Read the
+report at **Actions → Issue preflight → Summary → TriageProof report**.
 
 `advisory` is the recommended pilot mode: it always reports without blocking the workflow. Change it to `strict` to return exit code `1` for missing information or `2` for a potential secret. Pin a full commit SHA instead of `v0` where your supply-chain policy requires immutable actions.
 
@@ -129,8 +195,10 @@ events, and CI that loads the actual Action entry point. The version comes from 
 package manifest. AI integrations, automatic issue mutation, broad secret scanning,
 and configuration systems remain out of scope.
 
-CI uses synthetic issue payloads. These self-tests do not establish external adoption;
-live issue-event validation and maintainer feedback are tracked separately.
+CI uses synthetic issue payloads. [Issue #1](https://github.com/0hell/triageproof/issues/1)
+also exercises real `opened` and `edited` events with synthetic content; see the
+[live demonstration record](docs/LIVE_DEMO.md). These checks do not establish
+external adoption; maintainer feedback is tracked separately.
 
 See the [v0.2 plan](docs/V0.2_PLAN.md), [roadmap](ROADMAP.md), and [changelog](CHANGELOG.md).
 

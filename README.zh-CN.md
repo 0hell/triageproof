@@ -21,7 +21,31 @@ TriageProof 在进入分诊流程前检查公开错误报告：提示缺失的�
 
 > **早期 MVP：**TriageProof 能降低无效分诊和意外泄露风险，但不能保证报告完整或完全没有敏感信息。
 
-## 查看实际结果
+## 真实演示：不完整 Issue → Action 检测 → 补全通过
+
+我们在 **2026-09-05** 创建并编辑了[测试 Issue #1](https://github.com/0hell/triageproof/issues/1)，
+实际触发了两次 GitHub Actions。正文是维护者专门准备的模拟样例。
+
+### 1. 提交不完整 Issue
+
+[初始正文](examples/live-demo/before.md)故意只填写环境信息：
+
+```markdown
+# Demonstration report
+
+This is a maintainer-created synthetic example for the README, not a product defect.
+The first version intentionally omits reproduction steps and expected/actual behavior.
+
+## Environment
+
+Windows 11, Node.js 22.12.0 (example environment).
+```
+
+### 2. 查看缺失信息报告
+
+打开[第一次 Action 运行](https://github.com/0hell/triageproof/actions/runs/33952775281)，
+在 **Summary** 页面向下找到 **TriageProof report**（如有提示，请先登录 GitHub）。
+初始正文对应的检测结果：
 
 ```text
 TriageProof report
@@ -39,9 +63,42 @@ Security preflight: no high-confidence pattern detected
 
 报告只包含受控的检查结果和位置，不回显原始 Issue 正文或检测到的凭据值。
 
-## 五分钟接入 GitHub 仓库
+<!-- LIVE-DEMO-BEFORE-SCREENSHOT
+截取真实 GitHub Summary 后，添加 PNG 文件并取消下面图片的注释：
+![不完整 Issue：需要补充信息，25/100](docs/assets/issue-preflight-needs-info.png)
+-->
 
-在你的仓库中创建 `.github/workflows/issue-preflight.yml`：
+### 3. 补全同一个 Issue，再次检测通过
+
+编辑同一个 Issue，补上复现步骤、预期结果和实际结果，自动触发第二次检测。
+查看[补全后的正文](examples/live-demo/after.md)和[第二次 Action 运行](https://github.com/0hell/triageproof/actions/runs/33952930498)。
+
+| 检查项 | 修改前 | 修改后 |
+| --- | --- | --- |
+| 复现步骤 | MISSING | PASS |
+| 环境信息 | PASS | PASS |
+| 预期结果 | MISSING | PASS |
+| 实际结果 | MISSING | PASS |
+| 完整度 | **25/100** | **100/100** |
+| 报告状态 | `needs-info`（需要补充信息） | **`ready`（可进入分诊）** |
+| 疑似凭据 | 0 | 0 |
+
+两次真实运行均使用 `advisory` 模式并成功完成。**工作流绿色表示 Action 执行成功，
+Issue 是否通过要看报告状态。** 上述结果也已使用同一版本的 Action 入口回放保存的正文核对。
+这是实际集成演示，不代表外部用户采用。
+
+<!-- LIVE-DEMO-AFTER-SCREENSHOT
+截取真实 GitHub Summary 后，添加 PNG 文件并取消下面图片的注释：
+![补全后 Issue：可进入分诊，100/100](docs/assets/issue-preflight-ready.png)
+-->
+
+报告截图待补充。[截图与复跑指南](docs/LIVE_DEMO.md)提供两个报告的直达链接、
+截图范围和图片保存位置。
+
+## 一键复制工作流
+
+点击下面代码块右上角的复制按钮，保存为仓库中的 `.github/workflows/issue-preflight.yml`。
+也可以直接使用[完整工作流文件](examples/issue-preflight.yml)。
 
 ```yaml
 name: Issue preflight
@@ -51,6 +108,10 @@ on:
     types: [opened, edited, reopened]
 
 permissions: {}
+
+concurrency:
+  group: triageproof-issue-${{ github.event.issue.number }}
+  cancel-in-progress: true
 
 jobs:
   preflight:
@@ -62,7 +123,8 @@ jobs:
           mode: advisory
 ```
 
-提交文件后，新建或编辑一个 Issue，然后前往 **Actions → Issue preflight → Summary** 查看报告。
+将文件提交到仓库的**默认分支**后，新建或编辑一个 Issue，
+前往 **Actions → Issue preflight → Summary → TriageProof report** 查看报告。
 
 建议试用阶段使用 `advisory`：只生成报告，不阻断工作流。改成 `strict` 后，信息缺失会返回退出码 `1`，疑似包含敏感凭据会返回 `2`。如果你的供应链策略要求不可变 Action，请将 `v0` 换成完整提交 SHA。
 
@@ -128,7 +190,9 @@ node bin/triageproof.js sanitize issue.md > safe-issue.md
 以及实际加载 Action 入口的 CI 验证。版本号统一来自项目配置。
 AI 集成、自动修改 Issue、广泛密钥扫描和复杂配置系统仍不在范围内。
 
-CI 使用模拟 Issue 数据。这些自测不代表外部采用；真实 Issue 事件的验证和维护者反馈单独记录。
+CI 使用模拟 Issue 数据。[测试 Issue #1](https://github.com/0hell/triageproof/issues/1)
+还使用模拟正文验证了真实的 `opened` 和 `edited` 事件，详见[真实演示记录](docs/LIVE_DEMO.md)。
+这些验证不代表外部采用；维护者反馈单独记录。
 
 参见 [v0.2 计划](docs/V0.2_PLAN.md)、[路线图](ROADMAP.md)和[更新日志](CHANGELOG.md)。
 
