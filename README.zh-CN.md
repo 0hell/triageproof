@@ -76,6 +76,10 @@ cd triageproof
 node bin/triageproof.js check examples/complete-issue.md
 ```
 
+执行 `npm run demo` 可以离线体验完整流程：脚本会使用模拟样例验证命令行、
+脱敏和 Action 的两种模式，并在新的 `demo-output/run-*/` 目录生成可阅读的报告。
+先打开其中的 `SUMMARY.md`。详见[本地演示指南](docs/LOCAL_DEMO.md)。
+
 检查自己的 Markdown、读取标准输入、输出 JSON 或生成清理后的文本：
 
 ```powershell
@@ -92,7 +96,7 @@ node bin/triageproof.js sanitize issue.md > safe-issue.md
 | `2` | 检测到疑似敏感凭据 |
 | `64` | 命令、输入、事件或 Action 模式无效 |
 
-## v0.1 当前检查内容
+## 当前检查内容
 
 | 检查项 | 当前行为 |
 | --- | --- |
@@ -120,7 +124,11 @@ node bin/triageproof.js sanitize issue.md > safe-issue.md
 
 ## 当前状态与路线图
 
-`v0.1.1` 是公开 MVP。下一个功能版本为 **v0.2 — Pilot Ready**，聚焦 Action 可靠性、接入说明、可观察结果和反馈闭环。AI 集成、自动修改 Issue、广泛密钥扫描和复杂配置系统不属于 v0.2 范围。
+**v0.2 — Pilot Ready** 增加可重复运行的本地演示、损坏事件的安全错误提示，
+以及实际加载 Action 入口的 CI 验证。版本号统一来自项目配置。
+AI 集成、自动修改 Issue、广泛密钥扫描和复杂配置系统仍不在范围内。
+
+CI 使用模拟 Issue 数据。这些自测不代表外部采用；真实 Issue 事件的验证和维护者反馈单独记录。
 
 参见 [v0.2 计划](docs/V0.2_PLAN.md)、[路线图](ROADMAP.md)和[更新日志](CHANGELOG.md)。
 

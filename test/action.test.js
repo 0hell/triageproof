@@ -147,3 +147,30 @@ test("action rejects an oversized event before parsing it", async () => {
   assert.equal(summary, "");
   assert.equal(actionOutput, "");
 });
+
+test("malformed JSON and event shapes fail without reflecting input", async (context) => {
+  const token = `ghp_${"F5e6".repeat(8)}`;
+  const cases = [
+    ["broken JSON", `{"issue": {"body": "${token}"`],
+    ["non-JSON credential", token],
+    ["invalid UTF-8", Buffer.from([0xff, 0xfe, 0xfd])],
+    ["null event", "null"],
+    ["array event", "[]"],
+    ["string event", JSON.stringify(token)],
+    ["string subject", JSON.stringify({ issue: token })],
+    ["array subject", JSON.stringify({ issue: [] })],
+    ["missing body", JSON.stringify({ issue: {} })],
+    ["object body", JSON.stringify({ issue: { body: { token } } })],
+    ["NUL body", JSON.stringify({ issue: { body: `${token}\0` } })],
+    ["oversized body", JSON.stringify({ issue: { body: token + "x".repeat(256 * 1024) } })]
+  ];
+  for (const [name, rawEvent] of cases) {
+    await context.test(name, async () => {
+      const { processResult, summary, actionOutput } = await runAction({}, "advisory", rawEvent);
+      assert.equal(processResult.status, 64);
+      assert.match(processResult.stderr, /^TriageProof action failed:/);
+      assert.equal(processResult.stdout + summary + actionOutput, "");
+      assert.equal(processResult.stderr.includes(token), false);
+    });
+  }
+});

@@ -1,6 +1,6 @@
 {
   "name": "triageproof",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Evidence-first issue preflight for open-source maintainers.",
   "repository": {
     "type": "git",
@@ -18,10 +18,16 @@
   "files": [
     "bin",
     "src",
+    "docs",
+    "examples",
+    "scripts",
+    "*.md",
+    "action.yml",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
+    "demo": "node scripts/demo.js",
     "test": "node --test test/analyzer.test.js test/cli.test.js test/security.test.js test/action.test.js",
     "check": "node --check bin/triageproof.js && node --check src/action.js && npm test"
   },

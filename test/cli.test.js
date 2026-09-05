@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
@@ -8,10 +8,11 @@ import { fileURLToPath } from "node:url";
 
 const CLI = fileURLToPath(new URL("../bin/triageproof.js", import.meta.url));
 
-test("CLI reports the package version", () => {
+test("CLI reports the package version", async () => {
+  const manifest = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
   const result = spawnSync(process.execPath, [CLI, "--version"], { encoding: "utf8" });
   assert.equal(result.status, 0);
-  assert.equal(result.stdout.trim(), "0.1.1");
+  assert.equal(result.stdout.trim(), manifest.version);
 });
 
 test("CLI emits Markdown and returns needs-info exit code", async () => {

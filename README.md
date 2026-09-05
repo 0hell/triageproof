@@ -76,6 +76,10 @@ cd triageproof
 node bin/triageproof.js check examples/complete-issue.md
 ```
 
+For a complete offline walkthrough, run `npm run demo`. It exercises the CLI, redaction,
+and both Action modes using synthetic fixtures, then saves readable reports in a new
+`demo-output/run-*/` directory. Start with `SUMMARY.md`. See the [local demo guide](docs/LOCAL_DEMO.md).
+
 Use your own Markdown file, standard input, JSON output, or sanitized output:
 
 ```bash
@@ -92,7 +96,7 @@ node bin/triageproof.js sanitize issue.md > safe-issue.md
 | `2` | A potential secret was detected |
 | `64` | Invalid command, input, event, or Action mode |
 
-## What v0.1 checks
+## What it checks
 
 | Check | Current behavior |
 | --- | --- |
@@ -120,7 +124,13 @@ We are looking for a small number of opt-in open-source repositories that receiv
 
 ## Status and roadmap
 
-`v0.1.1` is the public MVP. The next feature release is **v0.2 — Pilot Ready**, focused on Action reliability, onboarding, observable results, and a clean feedback loop. AI integrations, automatic issue mutation, broad secret scanning, and configuration systems are explicitly out of scope for v0.2.
+**v0.2 — Pilot Ready** adds a reproducible local demonstration, safe errors for malformed
+events, and CI that loads the actual Action entry point. The version comes from one
+package manifest. AI integrations, automatic issue mutation, broad secret scanning,
+and configuration systems remain out of scope.
+
+CI uses synthetic issue payloads. These self-tests do not establish external adoption;
+live issue-event validation and maintainer feedback are tracked separately.
 
 See the [v0.2 plan](docs/V0.2_PLAN.md), [roadmap](ROADMAP.md), and [changelog](CHANGELOG.md).
 

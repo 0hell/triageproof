@@ -20,10 +20,20 @@ This roadmap separates current capabilities from planned work.
 - [x] Handle empty bodies and invalid Action modes safely
 - [x] Expand Action behavior and security regression tests
 - [x] Add a public-safe, structured pilot feedback path
-- [ ] Record one public issue-event run in this repository
-- [ ] Pass the v0.2 release gates and publish `v0.2.0`
+- [x] Run an offline end-to-end demo with saved reports
+- [x] Harden malformed event failures without echoing input
+- [x] Add a CI job that loads the real Action entry point with synthetic issue data
+
+Version 0.2.0 is prepared for release. Release status and CI results are available on GitHub.
+The original public issue-event check remains a follow-up below; the synthetic Action
+test validates packaging and runner execution, not delivery of live Issue events.
 
 Pilot adoption is measured after the release and does not block the tag. See [docs/V0.2_PLAN.md](docs/V0.2_PLAN.md) for scope and acceptance criteria.
+
+## First live validation
+
+- [ ] Record one public issue-event run in this repository
+- [ ] Obtain consenting external pilots and maintainer-approved feedback
 
 ## After the first pilots
 
