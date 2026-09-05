@@ -1,6 +1,6 @@
 {
   "name": "triageproof",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Evidence-first issue preflight for open-source maintainers.",
   "repository": {
     "type": "git",

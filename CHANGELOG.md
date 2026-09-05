@@ -4,6 +4,10 @@ All notable changes will be documented here.
 
 ## Unreleased
 
+## 0.2.1 — 2026-09-05
+
+- Run the GitHub Action on Node.js 24 and add a regression check for the runtime declaration.
+
 ## 0.2.0 — 2026-09-05
 
 - Add `npm run demo`: an offline CLI, JSON, Markdown, redaction, and Action walkthrough with saved reports.

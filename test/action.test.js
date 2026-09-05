@@ -7,6 +7,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const ACTION = fileURLToPath(new URL("../src/action.js", import.meta.url));
+const ACTION_METADATA = fileURLToPath(new URL("../action.yml", import.meta.url));
 const COMPLETE_BODY = `## Steps to reproduce
 1. Run the command.
 
@@ -48,6 +49,13 @@ async function runAction(event, mode = "advisory", rawEvent, replay = false) {
     actionOutput: await readFile(outputPath, "utf8")
   };
 }
+
+test("Action metadata targets the supported Node 24 runtime", async () => {
+  const metadata = await readFile(ACTION_METADATA, "utf8");
+
+  assert.match(metadata, /^\s*using:\s*node24\s*$/m);
+  assert.doesNotMatch(metadata, /^\s*using:\s*node20\s*$/m);
+});
 
 test("action reads the event file as data and emits only a controlled report", async () => {
   const token = `ghp_${"Z9y8".repeat(8)}`;
