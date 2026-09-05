@@ -33,7 +33,7 @@ async function appendKeyValue(path, key, value) {
 }
 
 async function run() {
-  const eventPath = process.env.GITHUB_EVENT_PATH;
+  const eventPath = process.env["INPUT_EVENT-PATH"]?.trim() || process.env.GITHUB_EVENT_PATH;
   if (!eventPath) throw new ActionError("GITHUB_EVENT_PATH is not set");
 
   const mode = (process.env.INPUT_MODE ?? "advisory").trim().toLowerCase();

@@ -5,6 +5,10 @@ branding:
   icon: check-circle
   color: green
 inputs:
+  event-path:
+    description: Optional trusted local event JSON path for replay or CI. Defaults to the GitHub event file.
+    required: false
+    default: ''
   mode:
     description: Use advisory to report only, or strict to fail incomplete/blocked checks.
     required: false

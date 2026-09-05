@@ -43,3 +43,10 @@ Use `npm run check` to run regression tests. Demo fixtures are synthetic and mus
 be used as claims of external users or real-world security effectiveness.
 
 使用 `npm run check` 运行回归测试。模拟演示和自测结果不能算作真实用户或实际安全效果的证据。
+
+For a trusted event JSON replay, the Action accepts an optional `event-path` input.
+Normal issue workflows should omit it and use the runner event. Only a maintainer-controlled
+workflow should select this path; never derive it from an issue body.
+
+Action 提供可选的 `event-path`，用于回放由维护者准备的事件 JSON。
+普通 Issue 工作流无需设置；不要根据 Issue 正文拼接该路径。

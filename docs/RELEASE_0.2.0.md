@@ -8,11 +8,12 @@ the GitHub Action's error handling.
 - `npm run demo` runs the CLI, JSON and Markdown reports, sanitization, and both Action modes with synthetic examples. Reports are saved locally for inspection.
 - Malformed JSON, invalid UTF-8, and invalid event shapes produce controlled errors without copying input fragments into logs.
 - CI now loads the actual Action from the checkout and verifies status, score, and potential-secret outputs.
+- An optional `event-path` Action input supports replay of a maintainer-controlled event JSON file. Ordinary issue workflows keep the default runner event.
 - The CLI reads its version from package.json. The distributable includes demo scripts, examples, and documentation.
 
 ## Validation
 
-- 43 passing test cases, including nested cases, in the local regression run.
+- 44 passing test cases, including nested cases, in the local regression run.
 - Offline demo passed for ready, needs-info, and blocked reports, plus sanitization.
 - An independently extracted package passed the same demonstration.
 - GitHub CI checks the release source and the actual Action entry point.

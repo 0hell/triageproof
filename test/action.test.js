@@ -19,7 +19,7 @@ The command should pass.
 ## Actual behavior
 The command fails every time.`;
 
-async function runAction(event, mode = "advisory", rawEvent) {
+async function runAction(event, mode = "advisory", rawEvent, replay = false) {
   const directory = await mkdtemp(join(tmpdir(), "triageproof-action-"));
   const eventPath = join(directory, "event.json");
   const summaryPath = join(directory, "summary.md");
@@ -34,7 +34,8 @@ async function runAction(event, mode = "advisory", rawEvent) {
     cwd: directory,
     env: {
       ...process.env,
-      GITHUB_EVENT_PATH: eventPath,
+      GITHUB_EVENT_PATH: replay ? join(directory, "not-the-replayed-event.json") : eventPath,
+      "INPUT_EVENT-PATH": replay ? eventPath : "",
       GITHUB_STEP_SUMMARY: summaryPath,
       GITHUB_OUTPUT: outputPath,
       INPUT_MODE: mode
@@ -81,6 +82,14 @@ test("action reads a pull request body", async () => {
   assert.equal(processResult.status, 0);
   assert.match(actionOutput, /status=ready/);
   assert.match(actionOutput, /score=100/);
+});
+
+test("explicit replay path takes precedence over the runner event path", async () => {
+  const { processResult, actionOutput } = await runAction(
+    { issue: { body: COMPLETE_BODY } }, "advisory", undefined, true
+  );
+  assert.equal(processResult.status, 0);
+  assert.match(actionOutput, /status=ready/);
 });
 
 test("advisory mode always reports without failing", async (context) => {

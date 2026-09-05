@@ -59,7 +59,7 @@ for (const item of cases) {
     const outputsFile = join(output, `${item.name}-${mode}-outputs.txt`);
     const result = run(action, [], { env: {
       ...process.env,
-      GITHUB_EVENT_PATH: eventFile, GITHUB_STEP_SUMMARY: reportFile,
+      "INPUT_EVENT-PATH": "", GITHUB_EVENT_PATH: eventFile, GITHUB_STEP_SUMMARY: reportFile,
       GITHUB_OUTPUT: outputsFile, INPUT_MODE: mode
     } });
     assert.equal(result.status, mode === "strict" ? item.code : 0);
