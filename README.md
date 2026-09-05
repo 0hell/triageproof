@@ -64,10 +64,12 @@ Security preflight: no high-confidence pattern detected
 
 Reports contain controlled findings and locations—not the original issue body or detected credential value.
 
-<!-- LIVE-DEMO-BEFORE-SCREENSHOT
-After capturing the actual GitHub Summary, add the PNG and uncomment this image:
-![Incomplete issue: needs information, 25/100](docs/assets/issue-preflight-needs-info.png)
--->
+**Report screenshot — CI self-test:** the `action-smoke` job shows the same
+25/100 missing-information result using a synthetic event. This screenshot comes
+from [the CI run](https://github.com/0hell/triageproof/actions/runs/33953191758);
+the first live Issue run is linked above.
+
+![CI action-smoke report: needs information, 25/100](docs/assets/issue-preflight-needs-info2.png)
 
 ### 3. Complete the same issue and run it again
 
@@ -90,13 +92,24 @@ means the Action ran; the report status tells you whether the issue is ready.**
 The results above were also verified by replaying the saved bodies through the
 same Action version. This is a live integration demonstration, not external adoption evidence.
 
-<!-- LIVE-DEMO-AFTER-SCREENSHOT
-After capturing the actual GitHub Summary, add the PNG and uncomment this image:
-![Completed issue: ready, 100/100](docs/assets/issue-preflight-ready.png)
--->
+**Live Issue result:** the screenshot below shows `edited #1`, the `preflight`
+job, `Ready`, 100/100, and four `PASS` checks from the second run.
 
-Report screenshots are pending. The [capture and replay guide](docs/LIVE_DEMO.md)
-links to both reports and explains how to add the images here.
+![Completed issue: ready, 100/100](docs/assets/issue-preflight-ready.png)
+
+<details>
+<summary>CI self-test overview: CLI, advisory, strict, and sanitization</summary>
+
+This additional screenshot shows the `test` and `action-smoke` jobs from
+[the CI run](https://github.com/0hell/triageproof/actions/runs/33953191758).
+The table covers synthetic `ready`, `needs-info`, and `blocked` cases.
+
+![CI self-test overview with synthetic cases and sanitization result](docs/assets/issue-preflight-needs-info1.png)
+
+</details>
+
+See the [screenshot sources and replay guide](docs/LIVE_DEMO.md) for all three
+original images, their source runs, and instructions for repeating the demonstration.
 
 ## Copy the workflow into your repository
 

@@ -27,11 +27,14 @@ The default branch also pointed to that commit for both runs.
 
 The hosted run conclusions were verified through the GitHub API. The report values
 were checked by replaying the exact saved bodies through the same Action entry point.
-The README text is a compact representation of those results, not a captured screenshot.
-Actual GitHub Summary screenshots remain to be added by the maintainer.
+The README text is a compact representation of those results. Three original
+maintainer-provided screenshots are now included: two from the CI self-tests and
+one from the second live Issue run. The first live Issue run is documented by its
+run link and saved body; the 25/100 screenshot illustrates the CI `action-smoke` result.
 
 真实运行的完成状态已通过 GitHub API 核实；报告数值已用同一版本的 Action 入口回放正文核对。
-README 中的文字结果不是截图，真实 GitHub Summary 截图由维护者后续补充。
+已收录维护者提供的三张原始截图：两张来自 CI 自测，一张来自第二次真实 Issue 运行。
+第一次真实 Issue 运行保留运行链接与正文快照；25/100 的截图展示的是 CI `action-smoke` 结果。
 
 `advisory` reports missing information without failing the job. Therefore both runs
 are green, while only the second report is `ready`. The completeness score measures
@@ -42,37 +45,36 @@ nonzero exit code for missing information or a potential secret.
 补全通过表示 Issue 信息结构完整，不代表修复了产品缺陷。
 如需缺失信息时工作流变红，可在自己的仓库将 `mode: advisory` 改为 `mode: strict`。
 
-## Capture the two reports / 补充两张截图
+## Published screenshots / 已发布截图
 
-1. Sign in to GitHub and open the [first run](https://github.com/0hell/triageproof/actions/runs/33952775281).
-   Stay on **Summary** and scroll to **TriageProof report**. Capture the report title,
-   `Needs information`, `25/100`, the four checks, and the security preflight result.
-   Save as `docs/assets/issue-preflight-needs-info.png`.
-2. Open the [second run](https://github.com/0hell/triageproof/actions/runs/33952930498)
-   and capture the same area showing `Ready`, `100/100`, and four `PASS` results.
-   Save as `docs/assets/issue-preflight-ready.png`.
-3. In both `README.md` and `README.zh-CN.md`, find
-   `LIVE-DEMO-BEFORE-SCREENSHOT` and `LIVE-DEMO-AFTER-SCREENSHOT`. Replace each
-   whole comment block with its image line. Remove the sentence saying screenshots
-   are pending, update the pending note above, and commit the two PNGs and Markdown changes.
+All three PNGs are stored unchanged under `docs/assets/` and shared by both READMEs.
+Their original filenames are preserved; the source column identifies what each image shows.
 
-中文操作：
+三张 PNG 原样保存于 `docs/assets/`，保留原文件名，由中英文 README 共用。
+下表按截图中的实际工作流标注来源。
 
-1. 登录 GitHub，打开上表“修改前”的运行链接，在 **Summary** 页面向下找到报告。
-   用 `Win + Shift + S` 截取报告标题、状态、25/100 分数、四个检查项和安全预检结果。
-   保存为 `docs/assets/issue-preflight-needs-info.png`。
-2. 打开“修改后”的运行链接，截取相同区域，确认显示 `Ready`、100/100、四项 `PASS`。
-   保存为 `docs/assets/issue-preflight-ready.png`。
-3. 两份 README 都已预留图片语句。搜索 `LIVE-DEMO-`，将对应的整个 HTML 注释块替换为
-   其中的图片语句，再删除“截图待补充”的说明，并更新本页的待补充说明，一起提交。
+| Image / 原图 | Source / 来源 | Visible result / 展示内容 | README placement / 展示位置 |
+| --- | --- | --- | --- |
+| [issue-preflight-needs-info1.png](assets/issue-preflight-needs-info1.png) | [CI · 33953191758](https://github.com/0hell/triageproof/actions/runs/33953191758), `push`, commit `bb9332e` | `test` + `action-smoke`; synthetic case table and sanitization / 模拟场景表与脱敏结果 | Expandable CI overview / 可展开的 CI 自测总览 |
+| [issue-preflight-needs-info2.png](assets/issue-preflight-needs-info2.png) | [CI · 33953191758](https://github.com/0hell/triageproof/actions/runs/33953191758), `action-smoke` | `Needs information`, 25/100; three missing sections / 缺少三项信息 | Missing-information report, labeled CI self-test / 明确标注为 CI 自测的缺失信息报告 |
+| [issue-preflight-ready.png](assets/issue-preflight-ready.png) | [Issue preflight · 33952930498](https://github.com/0hell/triageproof/actions/runs/33952930498), `issues.edited` | `edited #1`, `preflight`, `Ready`, 100/100, four `PASS` checks | Live Issue result after completion / 真实 Issue 补全后通过结果 |
 
-For consistent images, use the same browser zoom and crop width. Capture the report
-itself rather than only the green workflow badge. The same two PNGs serve both READMEs.
-If the summary is hidden, sign in and reload the run; the report is not posted on the issue.
+The CI images use synthetic event payloads. The ready image shows the real
+`issues.edited` run for issue #1. Captions in both READMEs retain this distinction.
 
-两张图使用相同缩放和裁剪宽度即可，中英文 README 共用图片。
-不要只截绿色工作流徽章；截图重点是报告内容。如果未显示报告，请登录后刷新。
-报告不会自动评论到 Issue 下。
+CI 截图使用模拟事件；通过截图展示 Issue #1 的真实编辑事件。两份 README 的图注均保留来源说明。
+
+## Refresh screenshots / 后续更新截图
+
+Open the relevant run link above, sign in if needed, and stay on **Summary**.
+Scroll to **TriageProof report** and capture the title, status, score, four checks,
+and security preflight. A live Issue run has the `preflight` job; the CI self-test
+has `test` and `action-smoke`. When replacing an image, update its source link and
+caption in both READMEs and this record. Keep the existing run links for historical reference.
+
+后续更新时，打开对应运行链接并登录，在 **Summary** 中截取报告标题、状态、分数、
+四个检查项和安全预检。真实 Issue 运行的任务名为 `preflight`，CI 自测任务名为
+`test` 和 `action-smoke`。更换图片时同步更新两份 README 和本页的来源链接与图注，保留历史运行链接。
 
 ## Replay the saved bodies / 本地复跑正文
 

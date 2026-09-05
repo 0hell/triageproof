@@ -63,10 +63,11 @@ Security preflight: no high-confidence pattern detected
 
 报告只包含受控的检查结果和位置，不回显原始 Issue 正文或检测到的凭据值。
 
-<!-- LIVE-DEMO-BEFORE-SCREENSHOT
-截取真实 GitHub Summary 后，添加 PNG 文件并取消下面图片的注释：
-![不完整 Issue：需要补充信息，25/100](docs/assets/issue-preflight-needs-info.png)
--->
+**检测报告截图（CI 自测）：**下图来自 [CI 运行](https://github.com/0hell/triageproof/actions/runs/33953191758)
+中的 `action-smoke`，使用模拟事件展示同样的 25/100 缺失信息结果。
+第一次真实 Issue 运行请查看上方链接。
+
+![CI action-smoke 检测报告：需要补充信息，25/100](docs/assets/issue-preflight-needs-info2.png)
 
 ### 3. 补全同一个 Issue，再次检测通过
 
@@ -87,13 +88,22 @@ Security preflight: no high-confidence pattern detected
 Issue 是否通过要看报告状态。** 上述结果也已使用同一版本的 Action 入口回放保存的正文核对。
 这是实际集成演示，不代表外部用户采用。
 
-<!-- LIVE-DEMO-AFTER-SCREENSHOT
-截取真实 GitHub Summary 后，添加 PNG 文件并取消下面图片的注释：
-![补全后 Issue：可进入分诊，100/100](docs/assets/issue-preflight-ready.png)
--->
+**真实 Issue 补全结果：**下图来自第二次运行，显示 `edited #1`、`preflight` 任务、
+`Ready`、100/100 和四项 `PASS`。
 
-报告截图待补充。[截图与复跑指南](docs/LIVE_DEMO.md)提供两个报告的直达链接、
-截图范围和图片保存位置。
+![补全后 Issue：可进入分诊，100/100](docs/assets/issue-preflight-ready.png)
+
+<details>
+<summary>展开 CI 自测总览：命令行、advisory、strict 与脱敏</summary>
+
+下图展示同一次 [CI 运行](https://github.com/0hell/triageproof/actions/runs/33953191758)
+的 `test` 和 `action-smoke` 任务，以及模拟 `ready`、`needs-info`、`blocked` 场景的验证结果。
+
+![CI 自测总览：模拟场景与脱敏验证结果](docs/assets/issue-preflight-needs-info1.png)
+
+</details>
+
+[截图来源与复跑指南](docs/LIVE_DEMO.md)列出了三张原图、各自对应的运行记录和复跑步骤。
 
 ## 一键复制工作流
 
