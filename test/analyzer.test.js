@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { analyzeIssue, redactSecrets, renderMarkdown } from "../src/index.js";
+import { analyzeIssue, parseIssueSections, redactSecrets, renderMarkdown } from "../src/index.js";
 
 const ENGLISH_REPORT = `# Bug report
 
@@ -45,6 +45,60 @@ test("accepts a complete Chinese issue", () => {
   const result = analyzeIssue(CHINESE_REPORT);
   assert.equal(result.status, "ready");
   assert.equal(result.score, 100);
+});
+
+test("nested subsections retain their body as reproducibility evidence", () => {
+  const input = ENGLISH_REPORT.replace(
+    "1. Install the package.\n2. Run `tool inspect example.md`.",
+    "### Minimal reproduction\n1. Install the package.\n#### Run the example\n2. Run `tool inspect example.md`."
+  );
+  const result = analyzeIssue(input);
+  const section = parseIssueSections(input).reproduction;
+
+  assert.equal(result.status, "ready");
+  assert.equal(result.score, 100);
+  assert.equal(section.line, 3);
+  assert.match(section.raw, /### Minimal reproduction/);
+  assert.match(section.raw, /#### Run the example/);
+  assert.match(section.text, /Install the package/);
+  assert.doesNotMatch(section.text, /Minimal reproduction|Run the example/);
+});
+
+test("unrelated headings at the same or shallower level end a required section", () => {
+  for (const prefix of ["#", "##"]) {
+    const input = ENGLISH_REPORT.replace(
+      "## Steps to reproduce\n",
+      `## Steps to reproduce\n${prefix} Unrelated notes\n`
+    );
+    const result = analyzeIssue(input);
+
+    assert.equal(result.status, "needs-info", prefix);
+    assert.equal(result.score, 65, prefix);
+    assert.deepEqual(result.missing, ["reproduction"], prefix);
+  }
+});
+
+test("subsection titles alone do not satisfy a required field", () => {
+  const input = ENGLISH_REPORT.replace(
+    "1. Install the package.\n2. Run `tool inspect example.md`.",
+    "### Detailed reproduction instructions\n#### Include all the steps here"
+  );
+  const result = analyzeIssue(input);
+
+  assert.equal(result.status, "needs-info");
+  assert.deepEqual(result.missing, ["reproduction"]);
+});
+
+test("comments starting on a subsection title do not count as evidence", () => {
+  const input = ENGLISH_REPORT.replace(
+    "1. Install the package.\n2. Run `tool inspect example.md`.",
+    "### Minimal reproduction <!--\nTemplate guidance: install the package and run the command.\n-->"
+  );
+  const result = analyzeIssue(input);
+
+  assert.equal(result.status, "needs-info");
+  assert.deepEqual(result.missing, ["reproduction"]);
+  assert.equal(parseIssueSections(input).reproduction.text, "");
 });
 
 test("identifies missing expected and actual results", () => {

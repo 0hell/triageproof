@@ -147,7 +147,17 @@ report at **Actions → Issue preflight → Summary → TriageProof report**.
 
 ## Run it locally
 
-Requires Node.js 20 or newer. There are no runtime dependencies to install.
+Requires Node.js 20 or newer; Node.js 22 or 24 is recommended and covered by CI.
+The GitHub Action runs on Node.js 24. There are no runtime dependencies to install.
+
+Install the versioned [v0.2.2 Release](https://github.com/0hell/triageproof/releases/tag/v0.2.2) archive:
+
+```bash
+npm install -g https://github.com/0hell/triageproof/releases/download/v0.2.2/triageproof-0.2.2.tgz
+triageproof check issue.md
+```
+
+This uses the GitHub Release archive, not an npm registry package. To try the source and bundled examples:
 
 ```bash
 git clone https://github.com/0hell/triageproof.git
@@ -185,6 +195,10 @@ node bin/triageproof.js sanitize issue.md > safe-issue.md
 | Credential preflight | Small, high-confidence rules for selected keys, tokens, assignments, and private-key blocks |
 | Safe reporting | Markdown or JSON without echoing detected values |
 
+Recognized sections may contain nested subheadings such as `### Minimal reproduction`.
+Their body text counts toward the enclosing section; a subheading alone does not.
+An unrelated heading at the same or a higher level ends that section.
+
 ## Safety by design
 
 - Issue and pull-request text is treated as untrusted data and is never executed.
@@ -203,10 +217,11 @@ We are looking for a small number of opt-in open-source repositories that receiv
 
 ## Status and roadmap
 
-**v0.2 — Pilot Ready** adds a reproducible local demonstration, safe errors for malformed
-events, and CI that loads the actual Action entry point. The version comes from one
-package manifest. AI integrations, automatic issue mutation, broad secret scanning,
-and configuration systems remain out of scope.
+**v0.2.2** fixes missed evidence under nested Markdown subheadings and updates the
+CI actions to Node.js 24. The release includes the live demo screenshots, replay
+fixtures, and a CLI archive. Tests run on Node.js 22 and 24; a separate smoke job
+loads the actual Action entry point. AI integrations, automatic issue mutation,
+broad secret scanning, and configuration systems remain out of scope.
 
 CI uses synthetic issue payloads. [Issue #1](https://github.com/0hell/triageproof/issues/1)
 also exercises real `opened` and `edited` events with synthetic content; see the

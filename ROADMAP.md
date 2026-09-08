@@ -24,15 +24,16 @@ This roadmap separates current capabilities from planned work.
 - [x] Harden malformed event failures without echoing input
 - [x] Add a CI job that loads the real Action entry point with synthetic issue data
 
-Version 0.2.0 is prepared for release. Release status and CI results are available on GitHub.
-The original public issue-event check remains a follow-up below; the synthetic Action
-test validates packaging and runner execution, not delivery of live Issue events.
+The v0.2 series is released. Version 0.2.2 improves nested-section parsing and
+updates the CI actions to Node.js 24, with explicit CLI checks on Node.js 22 and 24.
+The [live Issue walkthrough](docs/LIVE_DEMO.md) records real opened/edited events
+using maintainer-created synthetic content. CI separately validates packaging and runner execution.
 
 Pilot adoption is measured after the release and does not block the tag. See [docs/V0.2_PLAN.md](docs/V0.2_PLAN.md) for scope and acceptance criteria.
 
 ## First live validation
 
-- [ ] Record one public issue-event run in this repository
+- [x] Record public issue-event runs in this repository ([before/after evidence](docs/LIVE_DEMO.md))
 - [ ] Obtain consenting external pilots and maintainer-approved feedback
 
 ## After the first pilots

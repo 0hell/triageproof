@@ -118,8 +118,15 @@ export function parseIssueSections(input) {
   const lines = String(input).replace(/^\uFEFF/, "").replace(/\r\n?/g, "\n").split("\n");
   const sections = {};
   let active = null;
+  let activeLevel = 0;
   let fence = null;
   const commentState = { open: false };
+
+  function appendContent(rawLine, visibleLine = rawLine) {
+    if (!active) return;
+    sections[active].lines.push(rawLine);
+    sections[active].contentLines.push(visibleLine);
+  }
 
   function visibleOutsideComments(line) {
     let rest = line;
@@ -156,7 +163,7 @@ export function parseIssueSections(input) {
       ) {
         fence = null;
       }
-      if (active) sections[active].lines.push(rawLine);
+      appendContent(rawLine);
       continue;
     }
 
@@ -164,21 +171,31 @@ export function parseIssueSections(input) {
     const opening = visibleLine.match(/^\s{0,3}(`{3,}|~{3,})(?:\s*.*)?$/);
     if (opening) {
       fence = { character: opening[1][0], length: opening[1].length };
-      if (active) sections[active].lines.push(rawLine);
+      appendContent(rawLine, visibleLine);
       continue;
     }
 
-    const heading = visibleLine.match(/^\s{0,3}#{1,6}\s+(.+?)\s*#*\s*$/);
+    const heading = visibleLine.match(/^\s{0,3}(#{1,6})\s+(.+?)\s*#*\s*$/);
     if (heading) {
-      const definition = definitionForHeading(heading[1]);
-      active = definition?.id ?? null;
-      if (definition && !sections[definition.id]) {
-        sections[definition.id] = { line: index + 1, lines: [] };
+      const definition = definitionForHeading(heading[2]);
+      const level = heading[1].length;
+      if (definition) {
+        active = definition.id;
+        activeLevel = level;
+        if (!sections[definition.id]) {
+          sections[definition.id] = { line: index + 1, lines: [], contentLines: [] };
+        }
+      } else if (active && level > activeLevel) {
+        // Keep subsection titles in raw text, but only their body counts as evidence.
+        sections[active].lines.push(rawLine);
+      } else {
+        active = null;
+        activeLevel = 0;
       }
       continue;
     }
 
-    if (active) sections[active].lines.push(rawLine);
+    appendContent(rawLine, visibleLine);
   }
 
   return Object.fromEntries(
@@ -187,7 +204,7 @@ export function parseIssueSections(input) {
       {
         line: section.line,
         raw: section.lines.join("\n").trim(),
-        text: meaningfulText(section.lines.join("\n"))
+        text: meaningfulText(section.contentLines.join("\n"))
       }
     ])
   );

@@ -140,7 +140,17 @@ jobs:
 
 ## 本地运行
 
-需要 Node.js 20 或更高版本，不需要安装运行时依赖。
+需要 Node.js 20 或更高版本；推荐使用 CI 覆盖的 Node.js 22 或 24。
+GitHub Action 使用 Node.js 24，不需要安装运行时依赖。
+
+安装 [v0.2.2 Release](https://github.com/0hell/triageproof/releases/tag/v0.2.2) 中的固定版本安装包：
+
+```powershell
+npm install -g https://github.com/0hell/triageproof/releases/download/v0.2.2/triageproof-0.2.2.tgz
+triageproof check issue.md
+```
+
+这里使用 GitHub Release 安装包，尚未发布到 npm 注册表。也可以下载源码，运行自带示例：
 
 ```powershell
 git clone https://github.com/0hell/triageproof.git
@@ -178,6 +188,9 @@ node bin/triageproof.js sanitize issue.md > safe-issue.md
 | 凭据预检 | 对部分密钥、Token、显式赋值和私钥块使用少量高置信规则 |
 | 安全报告 | 输出 Markdown 或 JSON，不回显检测值 |
 
+已识别的章节中可以包含 `### 最小复现` 等下级标题，标题下面的正文会计入所属章节。
+仅有子标题不算有效内容；遇到同级或更高级的无关标题时，该章节结束。
+
 ## 安全设计
 
 - 将 Issue 和 PR 文本作为不可信数据处理，永不执行其中的内容。
@@ -196,9 +209,9 @@ node bin/triageproof.js sanitize issue.md > safe-issue.md
 
 ## 当前状态与路线图
 
-**v0.2 — Pilot Ready** 增加可重复运行的本地演示、损坏事件的安全错误提示，
-以及实际加载 Action 入口的 CI 验证。版本号统一来自项目配置。
-AI 集成、自动修改 Issue、广泛密钥扫描和复杂配置系统仍不在范围内。
+**v0.2.2** 修复嵌套 Markdown 子标题导致的证据漏识别，CI 所用 Action 更新为 Node.js 24。
+发布包包含真实演示截图、回放样例和 CLI 安装包；测试覆盖 Node.js 22、24，
+另有实际加载 Action 入口的 CI 验证。AI 集成、自动修改 Issue、广泛密钥扫描和复杂配置系统仍不在范围内。
 
 CI 使用模拟 Issue 数据。[测试 Issue #1](https://github.com/0hell/triageproof/issues/1)
 还使用模拟正文验证了真实的 `opened` 和 `edited` 事件，详见[真实演示记录](docs/LIVE_DEMO.md)。

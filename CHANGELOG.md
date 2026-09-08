@@ -4,6 +4,14 @@ All notable changes will be documented here.
 
 ## Unreleased
 
+## 0.2.2 — 2026-09-08
+
+- Recognize reproduction evidence under nested Markdown subheadings without counting unrelated sibling sections as evidence.
+- Use Node.js 24-based checkout/setup actions pinned to full commit SHAs and test the CLI on Node.js 22 and 24.
+- Disable persisted checkout credentials in CI.
+- Include the existing live Issue walkthrough, source-labeled screenshots, and before/after fixtures in the release package.
+- Document installation from the versioned Release archive without requiring an npm registry publication.
+
 ## 0.2.1 — 2026-09-05
 
 - Run the GitHub Action on Node.js 24 and add a regression check for the runtime declaration.
