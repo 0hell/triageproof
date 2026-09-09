@@ -1,5 +1,5 @@
 name: TriageProof
-description: Read-only issue/PR preflight: flag missing reproduction evidence and high-confidence secrets before triage.
+description: "Read-only issue/PR preflight: flag missing reproduction evidence and high-confidence secrets before triage."
 author: TriageProof contributors
 branding:
   icon: check-circle
