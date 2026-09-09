@@ -9,10 +9,20 @@ const FIELD_DEFINITIONS = [
       "reproduction steps",
       "reproduction",
       "how to reproduce",
+      "to reproduce",
       "reproduce",
+      "minimal reproduction",
+      "minimal example",
+      "how to trigger",
+      "trigger steps",
       "复现步骤",
       "如何复现",
-      "重现步骤"
+      "重现步骤",
+      "如何重现",
+      "复现",
+      "重现",
+      "操作步骤",
+      "复现方法"
     ]
   },
   {
@@ -22,13 +32,24 @@ const FIELD_DEFINITIONS = [
     minimumLength: 3,
     aliases: [
       "environment",
+      "your environment",
+      "environment details",
+      "environment info",
       "system information",
       "runtime",
+      "runtime environment",
       "versions",
+      "platform",
+      "os",
+      "operating system",
       "环境信息",
       "运行环境",
       "系统信息",
-      "版本信息"
+      "版本信息",
+      "运行平台",
+      "操作系统",
+      "软硬件环境",
+      "设备信息"
     ]
   },
   {
@@ -39,11 +60,14 @@ const FIELD_DEFINITIONS = [
     aliases: [
       "expected behavior",
       "expected result",
+      "expected results",
       "expected",
       "what did you expect",
       "预期行为",
       "预期结果",
-      "期望结果"
+      "期望结果",
+      "期望",
+      "期望表现"
     ]
   },
   {
@@ -54,10 +78,15 @@ const FIELD_DEFINITIONS = [
     aliases: [
       "actual behavior",
       "actual result",
+      "actual results",
       "actual",
+      "actual output",
+      "observed behavior",
       "what happened",
       "实际行为",
       "实际结果",
+      "实际",
+      "实际表现",
       "发生了什么"
     ]
   }
@@ -86,7 +115,8 @@ function normalizeHeading(value) {
   return value
     .toLowerCase()
     .replace(/<!--.*?-->/g, "")
-    .replace(/[：:？?！!。．.、，,()（）\[\]【】]/g, " ")
+    .replace(/[（(][^）)]*[）)]/g, " ")
+    .replace(/[：:？?！!。．.、，,\[\]【】]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -180,10 +210,14 @@ export function parseIssueSections(input) {
       const definition = definitionForHeading(heading[2]);
       const level = heading[1].length;
       if (definition) {
-        active = definition.id;
-        activeLevel = level;
-        if (!sections[definition.id]) {
-          sections[definition.id] = { line: index + 1, lines: [], contentLines: [] };
+        if (active === definition.id && level > activeLevel) {
+          sections[active].lines.push(rawLine);
+        } else {
+          active = definition.id;
+          activeLevel = level;
+          if (!sections[definition.id]) {
+            sections[definition.id] = { line: index + 1, lines: [], contentLines: [] };
+          }
         }
       } else if (active && level > activeLevel) {
         // Keep subsection titles in raw text, but only their body counts as evidence.

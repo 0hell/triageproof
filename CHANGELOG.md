@@ -4,6 +4,14 @@ All notable changes will be documented here.
 
 ## Unreleased
 
+## 0.2.3 — 2026-09-09
+
+- Recognize common GitHub issue-form headings (`To Reproduce`, `Your Environment (...)`, expected/actual behavior).
+- Expand Simplified Chinese heading aliases and strip parenthetical helper text from headings.
+- Keep same-field nested headings such as `### Minimal reproduction` under the enclosing required section.
+- Ship a leaner npm package without demo screenshots and add a maintainer publish checklist.
+- Clarify the Marketplace-facing Action description while keeping the Action read-only.
+
 ## 0.2.2 — 2026-09-08
 
 - Recognize reproduction evidence under nested Markdown subheadings without counting unrelated sibling sections as evidence.

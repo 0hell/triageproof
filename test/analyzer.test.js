@@ -108,6 +108,43 @@ test("identifies missing expected and actual results", () => {
   assert.deepEqual(result.missing, ["expected", "actual"]);
 });
 
+test("accepts common GitHub issue-form headings", () => {
+  const result = analyzeIssue(`### To Reproduce
+1. Open the sample project.
+2. Run the failing command once.
+
+### Your Environment (please complete the following information)
+- OS: Windows 11
+- Node.js: 22
+
+### Expected behavior
+The command exits zero and writes a report.
+
+### Actual behavior
+The command exits one without a report.
+`);
+  assert.equal(result.status, "ready");
+  assert.equal(result.score, 100);
+  assert.deepEqual(result.missing, []);
+});
+
+test("accepts additional Chinese template aliases", () => {
+  const result = analyzeIssue(`## 复现
+1. 打开示例项目并执行检查命令。
+
+## 操作系统
+Windows 11，Node.js 22。
+
+## 期望
+命令正常输出检查报告。
+
+## 实际表现
+命令退出且没有生成报告。
+`);
+  assert.equal(result.status, "ready");
+  assert.equal(result.score, 100);
+});
+
 test("blocks high-confidence secrets without returning their values", () => {
   const secret = `sk-proj-${"A1b2".repeat(8)}`;
   const result = analyzeIssue(`${ENGLISH_REPORT}\nAPI key: ${secret}`);

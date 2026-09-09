@@ -150,10 +150,10 @@ report at **Actions → Issue preflight → Summary → TriageProof report**.
 Requires Node.js 20 or newer; Node.js 22 or 24 is recommended and covered by CI.
 The GitHub Action runs on Node.js 24. There are no runtime dependencies to install.
 
-Install the versioned [v0.2.2 Release](https://github.com/0hell/triageproof/releases/tag/v0.2.2) archive:
+Install the versioned [v0.2.3 Release](https://github.com/0hell/triageproof/releases/tag/v0.2.3) archive:
 
 ```bash
-npm install -g https://github.com/0hell/triageproof/releases/download/v0.2.2/triageproof-0.2.2.tgz
+npm install -g https://github.com/0hell/triageproof/releases/download/v0.2.3/triageproof-0.2.3.tgz
 triageproof check issue.md
 ```
 
@@ -189,7 +189,7 @@ node bin/triageproof.js sanitize issue.md > safe-issue.md
 
 | Check | Current behavior |
 | --- | --- |
-| Reproduction evidence | English and Simplified Chinese Markdown headings |
+| Reproduction evidence | English and Simplified Chinese Markdown headings, including common issue-form titles such as `To Reproduce` |
 | Environment | Requires non-placeholder content |
 | Expected and actual behavior | Checked separately for actionable gaps |
 | Credential preflight | Small, high-confidence rules for selected keys, tokens, assignments, and private-key blocks |
@@ -198,6 +198,7 @@ node bin/triageproof.js sanitize issue.md > safe-issue.md
 Recognized sections may contain nested subheadings such as `### Minimal reproduction`.
 Their body text counts toward the enclosing section; a subheading alone does not.
 An unrelated heading at the same or a higher level ends that section.
+Parenthetical helper text in headings (for example `Your Environment (please complete...)`) is ignored when matching.
 
 ## Safety by design
 
@@ -217,10 +218,10 @@ We are looking for a small number of opt-in open-source repositories that receiv
 
 ## Status and roadmap
 
-**v0.2.2** fixes missed evidence under nested Markdown subheadings and updates the
-CI actions to Node.js 24. The release includes the live demo screenshots, replay
-fixtures, and a CLI archive. Tests run on Node.js 22 and 24; a separate smoke job
-loads the actual Action entry point. AI integrations, automatic issue mutation,
+**v0.2.3** recognizes common GitHub issue-form headings and Simplified Chinese
+template aliases, keeps nested reproduction subsections intact, and ships a leaner
+package archive. The maintainer publish path for Marketplace and npm is documented
+in [docs/PUBLISH.md](docs/PUBLISH.md). AI integrations, automatic issue mutation,
 broad secret scanning, and configuration systems remain out of scope.
 
 CI uses synthetic issue payloads. [Issue #1](https://github.com/0hell/triageproof/issues/1)

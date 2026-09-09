@@ -36,6 +36,15 @@ Pilot adoption is measured after the release and does not block the tag. See [do
 - [x] Record public issue-event runs in this repository ([before/after evidence](docs/LIVE_DEMO.md))
 - [ ] Obtain consenting external pilots and maintainer-approved feedback
 
+## v0.2.3 — Template adoption
+
+Released 2026-09-09. Focused on reducing false negatives for real repository issue templates.
+
+- [x] Recognize common GitHub issue-form English headings
+- [x] Expand Simplified Chinese template aliases
+- [x] Preserve nested subsections that restate the current field
+- [x] Slim the npm package and document Marketplace/npm publish steps
+
 ## After the first pilots
 
 - Improve rules based on measured false positives and missing cases

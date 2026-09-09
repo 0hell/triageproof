@@ -143,10 +143,10 @@ jobs:
 需要 Node.js 20 或更高版本；推荐使用 CI 覆盖的 Node.js 22 或 24。
 GitHub Action 使用 Node.js 24，不需要安装运行时依赖。
 
-安装 [v0.2.2 Release](https://github.com/0hell/triageproof/releases/tag/v0.2.2) 中的固定版本安装包：
+安装 [v0.2.3 Release](https://github.com/0hell/triageproof/releases/tag/v0.2.3) 中的固定版本安装包：
 
 ```powershell
-npm install -g https://github.com/0hell/triageproof/releases/download/v0.2.2/triageproof-0.2.2.tgz
+npm install -g https://github.com/0hell/triageproof/releases/download/v0.2.3/triageproof-0.2.3.tgz
 triageproof check issue.md
 ```
 
@@ -182,7 +182,7 @@ node bin/triageproof.js sanitize issue.md > safe-issue.md
 
 | 检查项 | 当前行为 |
 | --- | --- |
-| 复现证据 | 支持英文和简体中文 Markdown 标题 |
+| 复现证据 | 支持英文和简体中文 Markdown 标题，包括 `To Reproduce` 等常见 Issue 表单标题 |
 | 环境信息 | 要求存在非占位内容 |
 | 预期与实际结果 | 分开检查，明确指出缺口 |
 | 凭据预检 | 对部分密钥、Token、显式赋值和私钥块使用少量高置信规则 |
@@ -190,6 +190,7 @@ node bin/triageproof.js sanitize issue.md > safe-issue.md
 
 已识别的章节中可以包含 `### 最小复现` 等下级标题，标题下面的正文会计入所属章节。
 仅有子标题不算有效内容；遇到同级或更高级的无关标题时，该章节结束。
+标题中的括号说明文字（例如 `Your Environment (please complete...)`）在匹配时会被忽略。
 
 ## 安全设计
 
@@ -209,9 +210,9 @@ node bin/triageproof.js sanitize issue.md > safe-issue.md
 
 ## 当前状态与路线图
 
-**v0.2.2** 修复嵌套 Markdown 子标题导致的证据漏识别，CI 所用 Action 更新为 Node.js 24。
-发布包包含真实演示截图、回放样例和 CLI 安装包；测试覆盖 Node.js 22、24，
-另有实际加载 Action 入口的 CI 验证。AI 集成、自动修改 Issue、广泛密钥扫描和复杂配置系统仍不在范围内。
+**v0.2.3** 识别常见 GitHub Issue 表单标题与更多中文模板别名，保留嵌套复现小节，
+并提供更精简的安装包。Marketplace 与 npm 发布步骤见 [docs/PUBLISH.md](docs/PUBLISH.md)。
+AI 集成、自动修改 Issue、广泛密钥扫描和复杂配置系统仍不在范围内。
 
 CI 使用模拟 Issue 数据。[测试 Issue #1](https://github.com/0hell/triageproof/issues/1)
 还使用模拟正文验证了真实的 `opened` 和 `edited` 事件，详见[真实演示记录](docs/LIVE_DEMO.md)。
